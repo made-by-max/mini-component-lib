@@ -7,19 +7,19 @@ import VisuallyHidden from "../VisuallyHidden";
 
 const SIZES = {
   small: {
-    "--borderRadius": 4 + "px",
-    "--height": 8 + "px",
-    "--padding": 0 + "px",
+    height: 8,
+    padding: 0,
+    radius: 4,
   },
   medium: {
-    "--borderRadius": 4 + "px",
-    "--height": 12 + "px",
-    "--padding": 0 + "px",
+    height: 12,
+    padding: 0,
+    radius: 4,
   },
   large: {
-    "--borderRadius": 8 + "px",
-    "--height": 24 + "px",
-    "--padding": 4 + "px",
+    height: 16,
+    padding: 4,
+    radius: 8,
   },
 };
 
@@ -27,37 +27,45 @@ const ProgressBar = ({ value, size }) => {
   const styles = SIZES[size];
 
   return (
-    // <ProgressBase
-    //   style={styles}
-    //   max={100}
-    //   value={value}
-    //   aria-valuenow={value}
-    // ></ProgressBase>
-    //
-    <Wrapper>
-      <ProgressBase
-        role="progressbar"
-        aria-valuenow={value}
-        aria-valuemin="0"
-        aria-valuemax="100"
-      ></ProgressBase>
+    <Wrapper
+      role="progressbar"
+      aria-valuenow={value}
+      aria-valuemin="0"
+      aria-valuemax="100"
+      style={{
+        "--padding": styles.padding + "px",
+        "--radius": styles.radius + "px",
+      }}
+    >
+      <VisuallyHidden>{value}%</VisuallyHidden>
+      <BarWrapper>
+        <ProgressBase
+          style={{
+            "--width": value + "%",
+            "--height": styles.height + "px",
+          }}
+        />
+      </BarWrapper>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  width: 400px;
-  height: 8px;
-  background-color: hsla(0, 0%, 50%, 0.15);
-  border-radius: var(--borderRadius);
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25) inset;
+  background-color: ${COLORS.transparentGray15};
+  box-shadow: inset 0px 2px 4px ${COLORS.transparentGray35};
+  border-radius: var(--radius);
+  padding: var(--padding);
+`;
+
+const BarWrapper = styled.div`
+  border-radius: 4px;
+  overflow: hidden;
 `;
 
 const ProgressBase = styled.div`
-  /*height: var(--height);*/
   background-color: hsla(240, 80%, 60%, 1);
-  height: 8px;
   width: var(--width);
+  height: var(--height);
   padding: var(--padding);
 `;
 
